@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="ecSectionJob" class="com.nriet.job.section.EcSectionJob" />
+
+	<!-- 
+	Spring Bean注入作业的两种方式：
+
+           方式一：@1、Spring使用JobDetailBean类，继承QuartzJobBean，重写
+                       protected void executeInternal(JobExecutionContext context)方法
+
+            @2、  或实现Job接口，在execute方法中调用执行任务
+                                                               
+            方式二：Spring使用MethodInvokingJobDetailFactoryBean，普通Java类都可
+	 -->
+	 
+	 <!-- 方式一的配置 -->
+	<bean id="ecSecionJobDetail2" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.nriet.job.section.EcSecionJob"></property>
+		<!-- 会自动注入到Job的属性中 -->
+		<property name="jobDataMap">
+			<map>
+				<entry key="name" value="tom" />
+			</map>
+		</property>
+	</bean>
+	<!-- 方式二的配置 -->
+	<bean id="ecSectionJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ecSectionJob" />
+		<property name="targetMethod" value="run" />
+	</bean>
+
+	<bean id="ecSectionTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="ecSectionJobDetail" />
+		<property name="cronExpression" value="0 0/20 * * * ?" />
+	</bean>
+
+	<!-- 如果自动注入使用byName会报一个表或视图不存在的异常,是因为这里也有一个dataSource属性,通过名称自动注入会将数据库的dataSource注入 -->
+	<bean id="myScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="true" />
+		<property name="triggers">
+			<list>
+				<ref bean="ecSectionTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

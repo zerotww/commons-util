@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+	<product>
+		<product1>
+			<product2 attr="2">aaa</product2>
+			
+		</product1>
+	</product>
+</test>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="failover:(tcp://10.124.31.191:61616)" />
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<!-- 该值设为true时deliveryMode, priority,timeToLive的值才会生效 -->
+		<property name="explicitQosEnabled" value="true" />
+		<!-- 1为持久化,2为非持久化,默认值是1 -->
+		<property name="deliveryMode" value="1" />
+		<!-- 以true和false的形式设置deliverMode属性 -->
+		<!-- <property name="deliveryPersistent" value="false"/> -->
+	</bean>
+
+	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="JSYTH_COLLECT" />
+	</bean>
+
+	<!-- <bean id="amqMessageListener" class="com.nriet.msg.AMQMessageListener" />
+
+	<bean id="listenerContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="idleConsumerLimit" value="10" />
+		<property name="destination" ref="destination" />
+		<property name="messageListener" ref="amqMessageListener" />
+		<property name="concurrentConsumers" value="40" />
+	</bean> -->
+</beans>

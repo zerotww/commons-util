@@ -1,0 +1,53 @@
+<project name="Sender">
+
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<pathconvert property="mf.classpath" pathsep=" ">
+		<path refid="classpath" />
+		<mapper>
+			<chainedmapper>
+				<!-- 移除绝对路径 -->
+				<flattenmapper />
+				<!-- 加上lib前缀 -->
+				<globmapper from="*" to="lib/*" />
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
+
+	<target name="package">
+		<delete file="${ant.project.name}.jar" />
+		<jar destfile="${ant.project.name}.jar" basedir="./bin" includes="com/**/*.class">
+			<manifest>
+				<attribute name="Main-Class" value="com.nriet.main.RunMe" />
+				<attribute name="Class-Path" value="${mf.classpath} ." />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- 需要有 jsch-0.1.51.jar -->
+	<target name="deployJar" depends="package">
+
+		<tstamp>
+			<format property="now" pattern="yyyyMMddHHmmss" />
+		</tstamp>
+		<sshexec host="10.124.31.244" username="root" password="nriet123" trust="true" command="cd /home/work;mv ${jarName}.jar ${jarName}.${now}.jar" />
+		<sshexec host="10.124.31.245" username="root" password="nriet123" trust="true" command="cd /home/work;mv ${jarName}.jar ${jarName}.${now}.jar" />
+		<property name="toDir" value="root:nriet123@10.124.31.203:/home/test/" />
+		<scp todir="${toDir}" trust="true">
+			<fileset dir=".">
+				<include name="${ant.project.name}.jar" />
+				<include name="*.sh" />
+				<!--  保持目录结构上传 -->
+				<include name="lib/" />
+			</fileset>
+			<fileset dir="./bin">
+				<exclude name="**/*.class" />
+			</fileset>
+		</scp>
+	</target>
+
+</project>

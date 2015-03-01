@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- MyBatis自动生成XML文件,实体类,Mapper类 -->
+<generatorConfiguration>
+	<classPathEntry location="D:/workspace/sts3.6/GraphicsInvoker/lib/ojdbc6.jar" />
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+			connectionURL="jdbc:oracle:thin:@10.124.32.225:1521:orcl" userId="jsmonitor"
+			password="jsmonitor" />
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<javaModelGenerator targetPackage="po"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="dao"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="dao" targetProject="src\main\java">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+		
+		<table tableName="t_rgbd" domainObjectName="DataRedeliverConfig">
+			<columnOverride column="VC_RGBD_ID" property="id" ></columnOverride>
+			<columnOverride column="VC_SOURCE_IP" property="sourceIP" ></columnOverride>
+			<columnOverride column="VC_SOURCE_PATH" property="sourcePath" ></columnOverride>
+			<columnOverride column="VC_SOURCE_ACCOUNT" property="sourceAccount" ></columnOverride>
+			<columnOverride column="VC_SOURCE_PWD" property="sourcePassword" ></columnOverride>
+			<columnOverride column="VC_DESTINATION_IP" property="destIP" ></columnOverride>
+			<columnOverride column="VC_DESTINATION_PATH" property="destPath" ></columnOverride>
+			<columnOverride column="VC_DESTINATION_ACCOUNT" property="destAccount" ></columnOverride>
+			<columnOverride column="VC_DESTINATION_PWD" property="destPassword" ></columnOverride>
+			<columnOverride column="VC_SAVE_PATH" property="savePath" ></columnOverride>
+			<columnOverride column="VC_REGULAR_FILENAME" property="template" ></columnOverride>
+			<columnOverride column="VC_PARENT_DATA_ABBR" property="parentDataTypeAbbr" ></columnOverride>
+			<columnOverride column="VC_SUB_DATA_ABBR" property="dataTypeAbbr" ></columnOverride>
+			<columnOverride column="N_FLAG" property="flag" javaType="java.lang.Integer" ></columnOverride>
+		</table>
+	</context>
+</generatorConfiguration>

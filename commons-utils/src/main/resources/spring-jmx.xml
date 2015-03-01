@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean name="threadState" class="com.nriet.jmx.ThreadState" />
+
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+		<property name="beans">
+			<map>
+				<entry key="mydomain:myjavaobj=MyJavaObject" value-ref="threadState" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="server"
+		class="org.springframework.jmx.support.ConnectorServerFactoryBean"
+		depends-on="registry">
+		<property name="objectName" value="connector:name=rmi" />
+		<property name="serviceUrl"
+			value="service:jmx:rmi://10.124.32.226/jndi/rmi://10.124.32.226:1099/jmxrmi" />
+	</bean>
+
+	<bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">
+		<property name="port" value="1099" />
+	</bean>
+</beans>
