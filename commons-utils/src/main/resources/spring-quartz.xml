@@ -48,6 +48,8 @@
 				<ref bean="ecSectionTrigger" />
 			</list>
 		</property>
+		<!-- 不提供则使用id属性的值 -->
+		<property name="schedulerName" value="myScheduler"/>
 	</bean>
 
 </beans>

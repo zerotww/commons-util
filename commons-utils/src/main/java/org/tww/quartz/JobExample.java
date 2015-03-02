@@ -11,10 +11,8 @@ import com.nriet.util.DateTimeUtil;
 public class JobExample implements Job {
 
 	@Override
-	public void execute(JobExecutionContext context)
-			throws JobExecutionException {
-		System.out.println(DateTimeUtil.toString(new Date(),
-				"yyyy MM dd HH mm ss SSS"));
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		System.out.println(Thread.currentThread().getName() + "===" + DateTimeUtil.toString(new Date(), "yyyy MM dd HH mm ss SSS"));
 	}
 
 }
